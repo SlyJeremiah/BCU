@@ -1,0 +1,7 @@
+{% extends "shop/base.html" %}
+{% block title %}My orders{% endblock %}
+{% block content %}<h2 class="section">My orders</h2>
+{% if orders %}<table><tr><th>Order</th><th>Date</th><th>Total</th><th>Status</th></tr>
+{% for o in orders %}<tr><td><a href="{% url 'order_detail' o.pk %}">{{ o.short_id }}</a></td><td>{{ o.created|date:"j M Y" }}</td>
+<td>{{ SHOP.CURRENCY_SYMBOL }}{{ o.total }}</td><td><span class="status {{ o.status }}">{{ o.get_status_display }}</span></td></tr>{% endfor %}</table>
+{% else %}<p>No orders yet. <a href="{% url 'product_list' %}">Start shopping</a></p>{% endif %}{% endblock %}

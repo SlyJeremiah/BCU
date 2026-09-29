@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}{% load static %}
+{% block hero %}<section class="hero"><div class="wrap">
+  <h1>{{ SHOP.ORG }} Shop</h1>
+  <p>Official merchandise, resources and sermons from the BCU of {{ SHOP.CHURCH }}. Every purchase supports our ministry to boys and young men.</p>
+  <a class="btn yellow" href="{% url 'product_list' %}">Browse the shop</a>
+  <a class="btn ghost" href="{% url 'donate' %}">Give a donation</a>
+</div></section>{% endblock %}
+{% block content %}
+<h2 class="section">Featured</h2>
+{% include "shop/_products.html" with products=featured %}
+{% if categories %}<h2 class="section">Categories</h2>
+<p>{% for c in categories %}<a class="btn ghost" style="color:var(--navy);margin:0 6px 6px 0" href="{% url 'product_list' %}?category={{ c.slug }}">{{ c.name }}</a>{% endfor %}</p>{% endif %}
+{% endblock %}

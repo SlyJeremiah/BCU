@@ -1,0 +1,25 @@
+{% extends "shop/base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<h2 class="section">Checkout</h2>
+<div class="two">
+  <form method="post" class="stack">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <p>{{ form.full_name.errors }}<label>Full name</label>{{ form.full_name }}</p>
+    <p>{{ form.email.errors }}<label>Email</label>{{ form.email }}</p>
+    <p>{{ form.phone.errors }}<label>Phone (WhatsApp)</label>{{ form.phone }}</p>
+    {% if has_physical %}
+    <p>{{ form.address.errors }}<label>Delivery address</label>{{ form.address }}</p>
+    <p>{{ form.city.errors }}<label>City / town</label>{{ form.city }}</p>
+    {% endif %}
+    <p>{{ form.notes.errors }}<label>Notes (optional)</label>{{ form.notes }}</p>
+    <div class="notice" style="margin-bottom:12px"><strong>Pay by mobile money</strong><br>{{ SHOP.PAYMENT_INSTRUCTIONS }}<br>
+      <strong>{{ SHOP.PAYMENT_NUMBER }}</strong> ({{ SHOP.PAYMENT_NAME }}) — amount <strong>{{ SHOP.CURRENCY_SYMBOL }}{{ total }}</strong></div>
+    <p>{{ form.payment_reference.errors }}<label>{{ form.payment_reference.label }}</label>{{ form.payment_reference }}</p>
+    <button class="btn">Place order</button>
+  </form>
+  <div><h3>Order summary</h3>
+    <table>{% for i in items %}<tr><td>{{ i.quantity }} × {{ i.product.name }}</td><td>{{ SHOP.CURRENCY_SYMBOL }}{{ i.line_total }}</td></tr>{% endfor %}
+    <tr><td><strong>Total</strong></td><td><strong>{{ SHOP.CURRENCY_SYMBOL }}{{ total }}</strong></td></tr></table></div>
+</div>
+{% endblock %}

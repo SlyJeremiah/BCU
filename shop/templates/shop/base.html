@@ -1,0 +1,38 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ SHOP.NAME }}{% endblock %} · {{ SHOP.ORG }}</title>
+<link rel="icon" href="{% static 'img/mcz-logo.jpg' %}">
+<link rel="stylesheet" href="{% static 'css/bcu.css' %}">
+<script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<header class="site"><div class="wrap">
+  <a class="brand" href="{% url 'home' %}"><img src="{% static 'img/mcz-logo.jpg' %}" alt="Methodist Church in Zimbabwe logo">
+    <span>{{ SHOP.NAME }}<small>{{ SHOP.ORG }} · {{ SHOP.CHURCH }}</small></span></a>
+  <nav class="main">
+    <a href="{% url 'product_list' %}">Shop</a>
+    <a href="{% url 'donate' %}">Donate</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'order_list' %}">My orders</a>
+      {% if user.is_staff %}<a href="/admin/">Admin</a>{% endif %}
+      <form method="post" action="{% url 'logout' %}" style="display:inline">{% csrf_token %}<button>Log out ({{ user.username }})</button></form>
+    {% else %}
+      <a href="{% url 'login' %}">Log in</a><a href="{% url 'register' %}">Register</a>
+    {% endif %}
+    <a href="{% url 'cart' %}">Cart <span class="badge" id="cart-badge">{% include 'shop/_cart_badge.html' %}</span></a>
+  </nav>
+</div></header>
+<div class="cross-bar"></div>
+{% block hero %}{% endblock %}
+<main class="wrap">
+  {% if messages %}<ul class="messages">{% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}</ul>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="site"><div class="wrap">
+  © {% now "Y" %} {{ SHOP.ORG }} (BCU) · {{ SHOP.CHURCH }}. Proceeds support the work of the BCU.
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "shop/base.html" %}
+{% block title %}Shop{% endblock %}
+{% block content %}
+<h2 class="section">Shop</h2>
+<form class="filters" hx-get="{% url 'product_list' %}" hx-target="#grid" hx-trigger="input delay:300ms from:input, change from:select" hx-push-url="true">
+  <input type="search" name="q" value="{{ q }}" placeholder="Search products…">
+  <select name="category"><option value="">All categories</option>
+    {% for c in categories %}<option value="{{ c.slug }}" {% if c.slug == cat %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select>
+  <select name="kind"><option value="">All types</option>
+    <option value="physical" {% if kind == "physical" %}selected{% endif %}>Physical</option>
+    <option value="digital" {% if kind == "digital" %}selected{% endif %}>Digital</option></select>
+</form>
+<div id="grid">{% include "shop/_product_grid.html" %}</div>
+{% endblock %}

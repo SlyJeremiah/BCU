@@ -1,0 +1,14 @@
+{% if items %}
+<table><tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th><th></th></tr>
+{% for i in items %}<tr>
+  <td><a href="{{ i.product.get_absolute_url }}">{{ i.product.name }}</a></td>
+  <td>{{ SHOP.CURRENCY_SYMBOL }}{{ i.product.price }}</td>
+  <td>{% if i.product.is_digital %}1{% else %}
+    <form hx-post="{% url 'cart_update' i.product.pk %}" hx-target="#cart-body" hx-trigger="change" method="post" action="{% url 'cart_update' i.product.pk %}">{% csrf_token %}
+    <input type="number" name="quantity" value="{{ i.quantity }}" min="0" max="{{ i.product.stock }}" style="width:70px"></form>{% endif %}</td>
+  <td>{{ SHOP.CURRENCY_SYMBOL }}{{ i.line_total }}</td>
+  <td><form hx-post="{% url 'cart_remove' i.product.pk %}" hx-target="#cart-body" method="post" action="{% url 'cart_remove' i.product.pk %}">{% csrf_token %}<button class="btn ghost" style="color:var(--red);padding:4px 10px">Remove</button></form></td>
+</tr>{% endfor %}
+<tr><td colspan="3"><strong>Total</strong></td><td colspan="2"><strong>{{ SHOP.CURRENCY_SYMBOL }}{{ total }}</strong></td></tr></table>
+<p style="text-align:right"><a class="btn" href="{% url 'checkout' %}">Checkout</a></p>
+{% else %}<p>Your cart is empty. <a href="{% url 'product_list' %}">Continue shopping</a></p>{% endif %}

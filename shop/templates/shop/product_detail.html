@@ -1,0 +1,20 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+<div class="two" style="margin-top:24px">
+  <div class="card"><div class="img">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}No image{% endif %}</div></div>
+  <div>
+    <span class="tag {{ product.kind }}">{{ product.get_kind_display }}</span>
+    <h1>{{ product.name }}</h1>
+    <p class="price" style="font-size:1.5rem">{{ SHOP.CURRENCY_SYMBOL }}{{ product.price }}</p>
+    <p>{{ product.description|linebreaksbr }}</p>
+    {% if product.is_digital %}<p class="notice">Digital item: available to download from your order page once payment is confirmed.</p>
+    {% elif product.in_stock %}<p>{{ product.stock }} in stock</p>{% endif %}
+    {% if product.in_stock %}
+    <form method="post" action="{% url 'cart_add' product.pk %}" hx-post="{% url 'cart_add' product.pk %}" hx-target="#cart-badge">{% csrf_token %}
+      {% if not product.is_digital %}<p style="max-width:120px"><input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}"></p>{% endif %}
+      <button class="btn green">Add to cart</button> <span id="add-note-{{ product.pk }}"></span></form>
+    {% else %}<p style="color:var(--red)"><strong>Out of stock</strong></p>{% endif %}
+  </div>
+</div>
+{% endblock %}

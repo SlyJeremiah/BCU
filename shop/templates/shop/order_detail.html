@@ -1,0 +1,10 @@
+{% extends "shop/base.html" %}
+{% block title %}Order {{ order.short_id }}{% endblock %}
+{% block content %}<h2 class="section">Order {{ order.short_id }} <span class="status {{ order.status }}">{{ order.get_status_display }}</span></h2>
+{% if order.status == "pending" %}<div class="notice">Thank you! We received your order. Once we confirm your mobile money payment (ref: <strong>{{ order.payment_reference }}</strong>) you will be emailed and any digital downloads unlock here.</div><br>{% endif %}
+<table><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr>
+{% for i in order.items.all %}<tr><td>{{ i.product.name }}</td><td>{{ i.quantity }}</td><td>{{ SHOP.CURRENCY_SYMBOL }}{{ i.line_total }}</td>
+<td>{% if i.product.is_digital %}{% if order.downloads_unlocked %}<a class="btn green" href="{% url 'download' order.pk i.pk %}">Download</a>{% else %}<em>Unlocks after payment</em>{% endif %}{% endif %}</td></tr>{% endfor %}
+<tr><td colspan="2"><strong>Total</strong></td><td colspan="2"><strong>{{ SHOP.CURRENCY_SYMBOL }}{{ order.total }}</strong></td></tr></table>
+{% if order.has_physical %}<p><strong>Deliver to:</strong> {{ order.full_name }}, {{ order.address }}, {{ order.city }} · {{ order.phone }}</p>{% endif %}
+{% endblock %}

@@ -1,0 +1,5 @@
+{% extends "shop/base.html" %}
+{% block title %}Donate{% endblock %}
+{% block content %}<h2 class="section">Support the BCU</h2>
+<div class="two"><form method="post" class="stack">{% csrf_token %}{{ form.as_p }}<button class="btn green">Pledge donation</button></form>
+<div class="notice"><strong>How to give</strong><br>{{ SHOP.PAYMENT_INSTRUCTIONS }}<br><strong>{{ SHOP.PAYMENT_NUMBER }}</strong> ({{ SHOP.PAYMENT_NAME }})</div></div>{% endblock %}

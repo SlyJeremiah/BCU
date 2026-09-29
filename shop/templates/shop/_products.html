@@ -1,0 +1,16 @@
+<div class="grid">
+{% for p in products %}
+  <div class="card">
+    <a class="img" href="{{ p.get_absolute_url }}">{% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">{% else %}No image{% endif %}</a>
+    <div class="body">
+      <span class="tag {{ p.kind }}">{{ p.get_kind_display }}</span>
+      <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+      <span class="price">{{ SHOP.CURRENCY_SYMBOL }}{{ p.price }}</span>
+      {% if p.in_stock %}
+      <form hx-post="{% url 'cart_add' p.pk %}" hx-target="#cart-badge" hx-swap="innerHTML" method="post" action="{% url 'cart_add' p.pk %}">{% csrf_token %}
+        <button class="btn green" style="width:100%">Add to cart</button> <span id="add-note-{{ p.pk }}"></span></form>
+      {% else %}<em style="color:var(--red)">Out of stock</em>{% endif %}
+    </div>
+  </div>
+{% empty %}<p>No products found.</p>{% endfor %}
+</div>
