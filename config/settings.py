@@ -174,11 +174,18 @@ SHOP = {
     "CURRENCY_SYMBOL": os.environ.get("SHOP_CURRENCY_SYMBOL", "$"),
     "PAYMENT_INSTRUCTIONS": os.environ.get(
         "PAYMENT_INSTRUCTIONS",
-        "Send payment via EcoCash / OneMoney / InnBucks to the BCU shop wallet, "
-        "then enter the transaction reference below. An administrator will confirm your payment.",
+        "Pay by bank transfer or EcoCash, then enter the transaction reference and upload your proof of payment (PoP). "
+        "An administrator will confirm your payment.",
     ),
-    "PAYMENT_NUMBER": os.environ.get("PAYMENT_NUMBER", "+263 77 000 0000"),
-    "PAYMENT_NAME": os.environ.get("PAYMENT_NAME", "BCU Shop"),
+    "ECOCASH_NUMBER": os.environ.get("ECOCASH_NUMBER", "+263 78 551 0151"),
+    "ECOCASH_NAME": os.environ.get("ECOCASH_NAME", "BCU Treasurer"),
+    "BANK": {
+        "Account name": os.environ.get("BANK_ACCOUNT_NAME", "Methodist Church in Zimbabwe Youth"),
+        "Bank": os.environ.get("BANK_NAME", "BancABC"),
+        "Branch": os.environ.get("BANK_BRANCH", "Heritage"),
+        "Branch code": os.environ.get("BANK_BRANCH_CODE", "21125"),
+        "Account number": os.environ.get("BANK_ACCOUNT_NUMBER", "12873696633189"),
+    },
 }
 
 if not DEBUG:

@@ -91,7 +91,9 @@ class Order(models.Model):
     address = models.TextField(blank=True, help_text="Required for physical items")
     city = models.CharField(max_length=100, blank=True)
     notes = models.TextField(blank=True)
-    payment_reference = models.CharField(max_length=100, blank=True, help_text="Mobile money transaction reference")
+    payment_reference = models.CharField(max_length=100, blank=True, help_text="Transaction reference")
+    proof_of_payment = models.FileField(upload_to="pop/", storage=private_storage, blank=True,
+                                        help_text="Customer's proof of payment (private)")
     status = models.CharField(max_length=12, choices=STATUSES, default=PENDING)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

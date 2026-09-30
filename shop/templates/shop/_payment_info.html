@@ -1,0 +1,7 @@
+<div class="notice"><strong>How to pay</strong><br>{{ SHOP.PAYMENT_INSTRUCTIONS }}
+  <table style="margin:10px 0">
+    {% for k, v in SHOP.BANK.items %}<tr><th>{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}
+    <tr><th>EcoCash</th><td><strong>{{ SHOP.ECOCASH_NUMBER }}</strong> ({{ SHOP.ECOCASH_NAME }})</td></tr>
+  </table>
+  {% if amount %}Amount to pay: <strong>{{ SHOP.CURRENCY_SYMBOL }}{{ amount }}</strong>{% endif %}
+</div>

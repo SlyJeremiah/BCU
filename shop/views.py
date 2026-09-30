@@ -94,10 +94,11 @@ def checkout(request):
         messages.info(request, "Your cart is empty.")
         return redirect("product_list")
     initial = {"full_name": request.user.get_full_name(), "email": request.user.email}
-    form = CheckoutForm(request.POST or None, initial=initial)
+    form = CheckoutForm(request.POST or None, request.FILES or None, initial=initial)
     if request.method == "POST" and form.is_valid():
         try:
-            order = create_order(request.user, form.cleaned_data, cart.data.items())
+            data = {**form.cleaned_data, "proof_of_payment": form.cleaned_data.get("proof_of_payment") or ""}
+            order = create_order(request.user, data, cart.data.items())
         except CheckoutError as e:
             form.add_error(None, str(e))
         else:

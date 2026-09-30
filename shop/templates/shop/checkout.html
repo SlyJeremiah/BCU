@@ -3,7 +3,7 @@
 {% block content %}
 <h2 class="section">Checkout</h2>
 <div class="two">
-  <form method="post" class="stack">{% csrf_token %}
+  <form method="post" class="stack" enctype="multipart/form-data">{% csrf_token %}
     {{ form.non_field_errors }}
     <p>{{ form.full_name.errors }}<label>Full name</label>{{ form.full_name }}</p>
     <p>{{ form.email.errors }}<label>Email</label>{{ form.email }}</p>
@@ -13,9 +13,9 @@
     <p>{{ form.city.errors }}<label>City / town</label>{{ form.city }}</p>
     {% endif %}
     <p>{{ form.notes.errors }}<label>Notes (optional)</label>{{ form.notes }}</p>
-    <div class="notice" style="margin-bottom:12px"><strong>Pay by mobile money</strong><br>{{ SHOP.PAYMENT_INSTRUCTIONS }}<br>
-      <strong>{{ SHOP.PAYMENT_NUMBER }}</strong> ({{ SHOP.PAYMENT_NAME }}) — amount <strong>{{ SHOP.CURRENCY_SYMBOL }}{{ total }}</strong></div>
+    {% include "shop/_payment_info.html" with amount=total %}<br>
     <p>{{ form.payment_reference.errors }}<label>{{ form.payment_reference.label }}</label>{{ form.payment_reference }}</p>
+    <p>{{ form.proof_of_payment.errors }}<label>{{ form.proof_of_payment.label }}</label>{{ form.proof_of_payment }}</p>
     <button class="btn">Place order</button>
   </form>
   <div><h3>Order summary</h3>

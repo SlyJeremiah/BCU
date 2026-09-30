@@ -1,4 +1,5 @@
 {% extends "shop/base.html" %}
 {% block content %}<h2 class="section">Thank you, {{ donation.donor_name }}!</h2>
-<p>Your pledge of {{ SHOP.CURRENCY_SYMBOL }}{{ donation.amount }} has been recorded. Please send it to <strong>{{ SHOP.PAYMENT_NUMBER }}</strong> ({{ SHOP.PAYMENT_NAME }}) if you have not yet. God bless you.</p>
+<p>Your pledge of {{ SHOP.CURRENCY_SYMBOL }}{{ donation.amount }} has been recorded. If you have not yet paid, please use the details below.</p>
+{% include "shop/_payment_info.html" with amount=donation.amount %}<br>
 <a class="btn" href="{% url 'home' %}">Back to shop</a>{% endblock %}

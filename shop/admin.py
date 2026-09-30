@@ -37,6 +37,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ("short_id", "full_name", "email", "status", "payment_reference", "created")
     list_filter = ("status",)
     search_fields = ("full_name", "email", "payment_reference", "id")
+    readonly_fields = ("proof_of_payment",)
     inlines = [OrderItemInline]
     actions = [mark_paid]
 
