@@ -8,6 +8,14 @@ from django.urls import reverse
 from django.utils.text import slugify
 
 
+def digital_path(instance, filename):
+    return f"digital/{uuid.uuid4().hex}/{filename}"
+
+
+def pop_path(instance, filename):
+    return f"pop/{uuid.uuid4().hex}/{filename}"
+
+
 def private_storage():
     return storages["private"]
 
@@ -42,7 +50,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0, help_text="Physical items only")
     image = models.ImageField(upload_to="products/", blank=True)
     digital_file = models.FileField(
-        upload_to="digital/", storage=private_storage, blank=True,
+        upload_to=digital_path, storage=private_storage, blank=True,
         help_text="Digital products only. Stored privately on Backblaze B2.",
     )
     is_active = models.BooleanField(default=True)
@@ -92,7 +100,7 @@ class Order(models.Model):
     city = models.CharField(max_length=100, blank=True)
     notes = models.TextField(blank=True)
     payment_reference = models.CharField(max_length=100, blank=True, help_text="Transaction reference")
-    proof_of_payment = models.FileField(upload_to="pop/", storage=private_storage, blank=True,
+    proof_of_payment = models.FileField(upload_to=pop_path, storage=private_storage, blank=True,
                                         help_text="Customer's proof of payment (private)")
     status = models.CharField(max_length=12, choices=STATUSES, default=PENDING)
     created = models.DateTimeField(auto_now_add=True)

@@ -91,8 +91,9 @@ B2_APP_KEY = os.environ.get("B2_APP_KEY", "")
 B2_ENDPOINT_URL = os.environ.get("B2_ENDPOINT_URL", "")  # e.g. https://s3.us-west-004.backblazeb2.com
 B2_REGION = os.environ.get("B2_REGION", "us-west-004")
 B2_PUBLIC_BUCKET = os.environ.get("B2_PUBLIC_BUCKET", "")
+# Optional: if unset, private files share the public bucket under private/ (unguessable names, signed URLs).
 B2_PRIVATE_BUCKET = os.environ.get("B2_PRIVATE_BUCKET", "")
-USE_B2 = bool(B2_KEY_ID and B2_APP_KEY and B2_ENDPOINT_URL and B2_PUBLIC_BUCKET and B2_PRIVATE_BUCKET)
+USE_B2 = bool(B2_KEY_ID and B2_APP_KEY and B2_ENDPOINT_URL and B2_PUBLIC_BUCKET)
 
 if USE_B2:
     STORAGES = {
@@ -114,7 +115,8 @@ if USE_B2:
             "OPTIONS": {
                 "access_key": B2_KEY_ID,
                 "secret_key": B2_APP_KEY,
-                "bucket_name": B2_PRIVATE_BUCKET,
+                "bucket_name": B2_PRIVATE_BUCKET or B2_PUBLIC_BUCKET,
+                "location": "" if B2_PRIVATE_BUCKET else "private",
                 "endpoint_url": B2_ENDPOINT_URL,
                 "region_name": B2_REGION,
                 "querystring_auth": True,
