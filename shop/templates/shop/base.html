@@ -7,8 +7,9 @@
 <link rel="icon" href="{% static 'img/mcz-logo.jpg' %}">
 <link rel="stylesheet" href="{% static 'css/bcu.css' %}">
 <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+{% block head %}{% endblock %}
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body class="{% block bodyclass %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 <header class="site"><div class="wrap">
   <a class="brand" href="{% url 'home' %}"><img src="{% static 'img/mcz-logo.jpg' %}" alt="Methodist Church in Zimbabwe logo">
     <span>{{ SHOP.NAME }}<small>{{ SHOP.ORG }} · {{ SHOP.CHURCH }}</small></span></a>
@@ -34,5 +35,6 @@
 <footer class="site"><div class="wrap">
   © {% now "Y" %} {{ SHOP.ORG }} (BCU) · {{ SHOP.CHURCH }}. Proceeds support the work of the BCU.
 </div></footer>
+<script src="{% static 'js/landing.js' %}" defer></script>
 </body>
 </html>

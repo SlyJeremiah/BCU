@@ -1,13 +1,80 @@
 {% extends "shop/base.html" %}{% load static %}
-{% block hero %}<section class="hero"><div class="wrap">
-  <h1>{{ SHOP.ORG }} Shop</h1>
-  <p>Official merchandise, resources and sermons from the BCU of {{ SHOP.CHURCH }}. Every purchase supports our ministry to boys and young men.</p>
-  <a class="btn yellow" href="{% url 'product_list' %}">Browse the shop</a>
-  <a class="btn ghost" href="{% url 'donate' %}">Give a donation</a>
-</div></section>{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'css/landing.css' %}">{% endblock %}
+{% block bodyclass %}landing{% endblock %}
+
+{% block hero %}
+<section class="hero2" id="top">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="ring r1" data-depth="30" aria-hidden="true"></div>
+  <div class="ring r2" data-depth="-20" aria-hidden="true"></div>
+  <div class="ring r3" data-depth="45" aria-hidden="true"></div>
+  <span class="orb o1" data-depth="60" aria-hidden="true"></span>
+  <span class="orb o2" data-depth="-40" aria-hidden="true"></span>
+  <span class="orb o3" data-depth="25" aria-hidden="true"></span>
+
+  <div class="wrap hero2-grid">
+    <div class="hero2-copy">
+      <p class="eyebrow reveal">{{ SHOP.CHURCH }}</p>
+      <h1 class="reveal">
+        <span class="line">{{ SHOP.ORG }}</span>
+        <span class="line big">Wear your <span class="rotator" data-words="Faith|Brotherhood|Service|Purpose"><b>Faith</b></span></span>
+      </h1>
+      <p class="lede reveal">Official BCU merchandise, sermons and resources. Every purchase and gift supports our ministry to boys and young men.</p>
+      <div class="cta reveal">
+        <a class="pill solid" href="{% url 'product_list' %}">Shop now <i>→</i></a>
+        <a class="pill" href="{% url 'donate' %}">Give a donation</a>
+      </div>
+    </div>
+
+    <div class="hero2-art reveal" data-depth="14">
+      <div class="halo" aria-hidden="true"></div>
+      <div class="photo"><img src="{% static 'img/bcu-hero.jpg' %}" alt="Members of the Boys Christian Union in their white blazers"></div>
+      <img class="crest" src="{% static 'img/mcz-logo.jpg' %}" alt="Methodist Church in Zimbabwe crest">
+      <span class="chip c1">✝ Faith</span><span class="chip c2">🤝 Fellowship</span><span class="chip c3">🌍 Service</span>
+    </div>
+  </div>
+  <a class="scroll-cue" href="#featured" aria-label="Scroll to products"><span></span></a>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="track">
+  {% for i in "1234" %}<span>Faith</span><em>✝</em><span>Brotherhood</span><em>✦</em><span>Service</span><em>✝</em><span>Purpose</span><em>✦</em>{% endfor %}
+</div></div>
+{% endblock %}
+
 {% block content %}
-<h2 class="section">Featured</h2>
-{% include "shop/_products.html" with products=featured %}
-{% if categories %}<h2 class="section">Categories</h2>
-<p>{% for c in categories %}<a class="btn ghost" style="color:var(--navy);margin:0 6px 6px 0" href="{% url 'product_list' %}?category={{ c.slug }}">{{ c.name }}</a>{% endfor %}</p>{% endif %}
+<section class="values">
+  <div class="value reveal" style="--d:0ms"><div class="ico">✝</div><h3>Rooted in faith</h3><p>Every item carries the cross of the Methodist Church in Zimbabwe.</p></div>
+  <div class="value reveal" style="--d:120ms"><div class="ico">🤝</div><h3>Built on brotherhood</h3><p>Uniforms, books and sermons that bring the union together.</p></div>
+  <div class="value reveal" style="--d:240ms"><div class="ico">🌍</div><h3>Given to serve</h3><p>Proceeds fund the BCU's work in congregations across Zimbabwe.</p></div>
+</section>
+
+<h2 class="section2 reveal" id="featured"><span>Featured</span> products</h2>
+<div class="grid fx">
+{% for p in featured %}
+  <article class="card tilt reveal" style="--d:{{ forloop.counter0 }}00ms">
+    <a class="img" href="{{ p.get_absolute_url }}">{% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">{% else %}<span class="ph">{% if p.is_digital %}♪{% else %}✝{% endif %}</span>{% endif %}</a>
+    <div class="body">
+      <span class="tag {{ p.kind }}">{{ p.get_kind_display }}</span>
+      <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+      <span class="price">{{ SHOP.CURRENCY_SYMBOL }}{{ p.price }}</span>
+      {% if p.in_stock %}
+      <form hx-post="{% url 'cart_add' p.pk %}" hx-target="#cart-badge" hx-swap="innerHTML" method="post" action="{% url 'cart_add' p.pk %}">{% csrf_token %}
+        <button class="pill solid sm" style="width:100%">Add to cart</button> <span id="add-note-{{ p.pk }}"></span></form>
+      {% else %}<em style="color:var(--red)">Out of stock</em>{% endif %}
+    </div>
+  </article>
+{% empty %}<p>New products are coming soon.</p>{% endfor %}
+</div>
+<p class="reveal" style="text-align:center;margin-top:24px"><a class="pill dark" href="{% url 'product_list' %}">See the whole shop →</a></p>
+
+{% if categories %}<div class="cats reveal">{% for c in categories %}<a href="{% url 'product_list' %}?category={{ c.slug }}">{{ c.name }}</a>{% endfor %}</div>{% endif %}
+
+<section class="give reveal">
+  <div class="ring r4" aria-hidden="true"></div><div class="ring r5" aria-hidden="true"></div>
+  <div class="give-in">
+    <h2>Give. Grow. Go.</h2>
+    <p>Support camps, outreach and discipleship for the boys of the BCU.</p>
+    <a class="pill solid" href="{% url 'donate' %}">Make a donation <i>→</i></a>
+  </div>
+</section>
 {% endblock %}
