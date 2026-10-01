@@ -5,6 +5,8 @@ from django.contrib import admin
 from django.db.models import Count, F, Sum
 from django.utils import timezone
 
+from .models import LOW_STOCK_BELOW
+
 
 class BCUAdminSite(admin.AdminSite):
     site_header = "BCU Shop Administration"
@@ -22,6 +24,7 @@ class BCUAdminSite(admin.AdminSite):
         donations = Donation.objects.filter(status=Donation.CONFIRMED).aggregate(t=Sum("amount"))["t"] or Decimal("0")
         top = (OrderItem.objects.filter(order__status__in=paid).values("product__name")
                .annotate(sold=Sum("quantity")).order_by("-sold")[:5])
+        low_stock = Product.objects.filter(kind=Product.PHYSICAL, is_active=True, stock__lt=LOW_STOCK_BELOW).order_by("stock", "name")
         ctx = {
             "stats": [
                 ("Orders awaiting payment", Order.objects.filter(status=Order.PENDING).count(), "pending"),
@@ -29,9 +32,11 @@ class BCUAdminSite(admin.AdminSite):
                 ("Revenue, last 30 days", revenue_30, "money"),
                 ("Donations confirmed", donations, "money"),
                 ("Donations pending", Donation.objects.filter(status=Donation.PENDING).count(), "pending"),
-                ("Low stock (≤5)", Product.objects.filter(kind=Product.PHYSICAL, is_active=True, stock__lte=5).count(), "pending"),
+                ("Low stock (under %d)" % LOW_STOCK_BELOW, low_stock.count(), "pending"),
             ],
             "recent_orders": Order.objects.select_related("user").order_by("-created")[:6],
             "top_products": top,
+            "low_stock": low_stock,
+            "low_stock_below": LOW_STOCK_BELOW,
         }
         return super().index(request, {**ctx, **(extra_context or {})})

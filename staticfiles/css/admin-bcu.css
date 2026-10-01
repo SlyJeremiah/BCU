@@ -26,3 +26,4 @@ div.breadcrumbs{background:var(--breadcrumbs-bg)}
 .bcu-badge.cancelled{background:#d40000;color:#fff}
 .bcu-thumb{width:44px;height:44px;object-fit:cover;border-radius:6px}
 .bcu-panels .module table{width:100%}.bcu-panels .module caption{width:100%;box-sizing:border-box}
+.bcu-alert{background:#fde2e2;border:1px solid #d40000;border-left:6px solid #d40000;color:#7a0000;border-radius:8px;padding:10px 16px;margin:0 0 20px}.bcu-alert ul{margin:6px 0 0;padding-left:18px}.bcu-alert a{color:#a30000;font-weight:600}

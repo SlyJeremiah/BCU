@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.utils.html import format_html
 
 from .emails import send_status_update
-from .models import Category, Donation, Order, OrderItem, Product
+from .models import LOW_STOCK_BELOW, Category, Donation, Order, OrderItem, Product
 
 
 def badge(status, label):
@@ -23,12 +23,28 @@ class CategoryAdmin(admin.ModelAdmin):
         return obj.products.count()
 
 
+class LowStockFilter(admin.SimpleListFilter):
+    title = "stock level"
+    parameter_name = "stock_level"
+
+    def lookups(self, request, model_admin):
+        return [("low", f"Low stock (under {LOW_STOCK_BELOW})"), ("out", "Out of stock")]
+
+    def queryset(self, request, qs):
+        qs = qs.filter(kind=Product.PHYSICAL) if self.value() else qs
+        if self.value() == "low":
+            return qs.filter(stock__lt=LOW_STOCK_BELOW)
+        if self.value() == "out":
+            return qs.filter(stock=0)
+        return qs
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("thumb", "name", "category", "kind", "price", "stock_display", "is_active")
     list_display_links = ("thumb", "name")
     list_editable = ("price", "is_active")
-    list_filter = ("kind", "is_active", "category")
+    list_filter = ("kind", "is_active", LowStockFilter, "category")
     search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
     readonly_fields = ("preview", "created")
@@ -52,7 +68,11 @@ class ProductAdmin(admin.ModelAdmin):
     def stock_display(self, obj):
         if obj.is_digital:
             return "Digital"
-        return format_html('<b style="color:{}">{}</b>', "#d40000" if obj.stock <= 5 else "inherit", obj.stock)
+        if obj.stock == 0:
+            return format_html('<b style="color:#d40000">0 · OUT OF STOCK</b>')
+        if obj.is_low_stock:
+            return format_html('<b style="color:#d40000">{} · LOW STOCK</b>', obj.stock)
+        return obj.stock
 
     @admin.action(description="Show selected products in the shop")
     def activate(self, request, queryset):

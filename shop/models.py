@@ -37,6 +37,9 @@ class Category(models.Model):
         return self.name
 
 
+LOW_STOCK_BELOW = 10
+
+
 class Product(models.Model):
     PHYSICAL, DIGITAL = "physical", "digital"
     KINDS = [(PHYSICAL, "Physical merchandise"), (DIGITAL, "Digital product")]
@@ -72,6 +75,10 @@ class Product(models.Model):
     @property
     def is_digital(self):
         return self.kind == self.DIGITAL
+
+    @property
+    def is_low_stock(self):
+        return not self.is_digital and self.stock < LOW_STOCK_BELOW
 
     @property
     def in_stock(self):

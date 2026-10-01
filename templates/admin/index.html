@@ -5,6 +5,8 @@
   <div class="bcu-stat {{ kind }}"><span>{{ label }}</span><strong>{% if kind == "money" %}{{ SHOP.CURRENCY_SYMBOL }}{% endif %}{{ value }}</strong></div>
 {% endfor %}
 </div>
+{% if low_stock %}<div class="bcu-alert"><strong>⚠ Low stock: restock these items (under {{ low_stock_below }} left)</strong>
+  <ul>{% for p in low_stock %}<li><a href="{% url 'admin:shop_product_change' p.pk %}">{{ p.name }}</a> — <b>{% if p.stock == 0 %}OUT OF STOCK{% else %}{{ p.stock }} left{% endif %}</b></li>{% endfor %}</ul></div>{% endif %}
 <div class="bcu-panels">
   <div class="module"><table><caption>Recent orders</caption>
     {% for o in recent_orders %}<tr><th><a href="{% url 'admin:shop_order_change' o.pk %}">{{ o.short_id }}</a></th><td>{{ o.full_name }}</td><td><span class="bcu-badge {{ o.status }}">{{ o.get_status_display }}</span></td></tr>
