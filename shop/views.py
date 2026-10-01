@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import FileResponse, Http404, HttpResponseRedirect
+from django.http import FileResponse, Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -118,6 +118,16 @@ def order_list(request):
 def order_detail(request, pk):
     order = get_object_or_404(Order.objects.prefetch_related("items__product"), pk=pk, user=request.user)
     return render(request, "shop/order_detail.html", {"order": order})
+
+
+@login_required
+def order_pdf_view(request, pk):
+    from .pdf import order_pdf
+
+    order = get_object_or_404(Order.objects.prefetch_related("items__product"), pk=pk, user=request.user)
+    resp = HttpResponse(order_pdf(order), content_type="application/pdf")
+    resp["Content-Disposition"] = f'attachment; filename="BCU-order-{order.short_id}.pdf"'
+    return resp
 
 
 @login_required

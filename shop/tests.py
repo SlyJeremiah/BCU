@@ -63,6 +63,16 @@ class ShopFlowTests(TestCase):
         self.assertEqual(r.status_code, 201)
         self.assertEqual(c.get("/api/products/").status_code, 200)
 
+    def test_order_pdf(self):
+        self._checkout([self.tie.pk])
+        order = Order.objects.get()
+        r = self.client.get(reverse("order_pdf", args=[order.pk]))
+        self.assertEqual(r.status_code, 200)
+        self.assertTrue(r.content.startswith(b"%PDF"))
+        User.objects.create_user("eve", password="pw12345678")
+        self.client.login(username="eve", password="pw12345678")
+        self.assertEqual(self.client.get(reverse("order_pdf", args=[order.pk])).status_code, 404)
+
     def test_donation(self):
         r = self.client.post(reverse("donate"), {"donor_name": "A", "email": "a@a.com", "amount": "10"})
         self.assertEqual(r.status_code, 200)
