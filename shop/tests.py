@@ -63,6 +63,15 @@ class ShopFlowTests(TestCase):
         self.assertEqual(r.status_code, 201)
         self.assertEqual(c.get("/api/products/").status_code, 200)
 
+    def test_quote_pdf(self):
+        self.client.login(username="bob", password="pw12345678")
+        self.assertRedirects(self.client.get(reverse("quote_pdf")), reverse("cart"))
+        self.client.post(reverse("cart_add", args=[self.tie.pk]), {"quantity": 2})
+        r = self.client.get(reverse("quote_pdf"))
+        self.assertTrue(r.content.startswith(b"%PDF"))
+        self.assertEqual(Order.objects.count(), 0)
+        self.assertEqual(r["Content-Type"], "application/pdf")
+
     def test_order_pdf(self):
         self._checkout([self.tie.pk])
         order = Order.objects.get()

@@ -110,6 +110,18 @@ def checkout(request):
 
 
 @login_required
+def quote_pdf_view(request):
+    from .pdf import quote_pdf
+
+    cart = Cart(request)
+    if not len(cart):
+        return redirect("cart")
+    resp = HttpResponse(quote_pdf(request.user, cart.items(), cart.total), content_type="application/pdf")
+    resp["Content-Disposition"] = 'attachment; filename="BCU-quote.pdf"'
+    return resp
+
+
+@login_required
 def order_list(request):
     return render(request, "shop/order_list.html", {"orders": request.user.orders.prefetch_related("items__product")})
 

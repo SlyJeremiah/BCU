@@ -66,3 +66,17 @@
     c.addEventListener("mouseleave", function () { c.style.transform = ""; });
   });
 })();
+
+// hamburger menu (runs on every page)
+(function () {
+  var b = document.getElementById("burger"), m = document.getElementById("menu");
+  if (!b || !m) return;
+  function set(open) {
+    m.classList.toggle("open", open);
+    b.setAttribute("aria-expanded", open);
+    b.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+  b.addEventListener("click", function (e) { e.stopPropagation(); set(!m.classList.contains("open")); });
+  document.addEventListener("click", function (e) { if (!m.contains(e.target)) set(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") set(false); });
+})();

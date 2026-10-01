@@ -19,6 +19,7 @@
     <button class="btn">Place order</button>
   </form>
   <div><h3>Order summary</h3>
+    <p><a class="btn yellow" href="{% url 'quote_pdf' %}">⬇ Download quote (PDF)</a></p>
     <table>{% for i in items %}<tr><td>{{ i.quantity }} × {{ i.product.name }}</td><td>{{ SHOP.CURRENCY_SYMBOL }}{{ i.line_total }}</td></tr>{% endfor %}
     <tr><td><strong>Total</strong></td><td><strong>{{ SHOP.CURRENCY_SYMBOL }}{{ total }}</strong></td></tr></table></div>
 </div>
