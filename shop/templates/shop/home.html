@@ -48,6 +48,23 @@
   <div class="value reveal" style="--d:240ms"><div class="ico">🌍</div><h3>Given to serve</h3><p>Proceeds fund the BCU's work in congregations across Zimbabwe.</p></div>
 </section>
 
+{% if executives %}
+<section class="team" id="team">
+  <h2 class="section2 reveal"><span>Meet</span> the team</h2>
+  <p class="team-sub reveal">The executive serving the Boys Christian Union.</p>
+  <div class="team-grid">
+  {% for e in executives %}
+    <article class="member tilt reveal" style="--d:{{ forloop.counter0 }}00ms">
+      <div class="avatar">{% if e.photo %}<img src="{{ e.photo.url }}" alt="{{ e.name }}" loading="lazy">{% else %}<span>{{ e.initials }}</span>{% endif %}</div>
+      <h3>{{ e.name }}</h3>
+      <p class="role">{{ e.position }}</p>
+      {% if e.bio %}<p class="bio">{{ e.bio }}</p>{% endif %}
+    </article>
+  {% endfor %}
+  </div>
+</section>
+{% endif %}
+
 <h2 class="section2 reveal" id="featured"><span>Featured</span> products</h2>
 <div class="grid fx">
 {% for p in featured %}

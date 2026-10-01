@@ -84,6 +84,12 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
+# Hashed filenames in production so browsers never serve stale CSS/JS.
+STATICFILES_BACKEND = (
+    "whitenoise.storage.CompressedStaticFilesStorage" if DEBUG
+    else "whitenoise.storage.CompressedManifestStaticFilesStorage"
+)
+
 # ---- Backblaze B2 (S3-compatible) -------------------------------------------
 # Public bucket: product images. Private bucket: digital products (signed URLs).
 B2_KEY_ID = os.environ.get("B2_KEY_ID", "")
@@ -125,7 +131,7 @@ if USE_B2:
                 "signature_version": "s3v4",
             },
         },
-        "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+        "staticfiles": {"BACKEND": STATICFILES_BACKEND},
     }
 else:
     MEDIA_URL = "/media/"
@@ -136,7 +142,7 @@ else:
             "BACKEND": "django.core.files.storage.FileSystemStorage",
             "OPTIONS": {"location": str(BASE_DIR / "media_private")},
         },
-        "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+        "staticfiles": {"BACKEND": STATICFILES_BACKEND},
     }
 
 # ---- DRF / JWT ----------------------------------------------------------------

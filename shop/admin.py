@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.utils.html import format_html
 
 from .emails import send_status_update
-from .models import LOW_STOCK_BELOW, Category, Donation, Order, OrderItem, Product
+from .models import LOW_STOCK_BELOW, Category, Contact, Donation, Executive, Order, OrderItem, Product
 
 
 def badge(status, label):
@@ -201,3 +201,31 @@ class DonationAdmin(admin.ModelAdmin):
     def confirm(self, request, queryset):
         n = queryset.update(status=Donation.CONFIRMED)
         self.message_user(request, f"{n} donation(s) confirmed.")
+
+
+@admin.register(Executive)
+class ExecutiveAdmin(admin.ModelAdmin):
+    list_display = ("photo_thumb", "name", "position", "order", "is_active")
+    list_display_links = ("photo_thumb", "name")
+    list_editable = ("order", "is_active")
+    search_fields = ("name", "position")
+    actions = ["show", "hide"]
+
+    @admin.display(description="")
+    def photo_thumb(self, obj):
+        return format_html('<img class="bcu-thumb" style="border-radius:50%" src="{}">', obj.photo.url) if obj.photo else "👤"
+
+    @admin.action(description="Show on the landing page")
+    def show(self, request, queryset):
+        queryset.update(is_active=True)
+
+    @admin.action(description="Hide from the landing page")
+    def hide(self, request, queryset):
+        queryset.update(is_active=False)
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ("role", "name", "phone", "order")
+    list_editable = ("name", "phone", "order")
+    search_fields = ("role", "name", "phone")

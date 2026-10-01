@@ -14,5 +14,8 @@
   <div class="module"><table><caption>Top sellers</caption>
     {% for t in top_products %}<tr><th>{{ t.product__name }}</th><td>{{ t.sold }} sold</td></tr>{% empty %}<tr><td>No sales yet.</td></tr>{% endfor %}</table></div>
 </div>
+<div class="module bcu-contacts"><table><caption>Key contacts <a class="bcu-edit" href="{% url 'admin:shop_contact_changelist' %}">Edit</a></caption>
+  {% for c in contacts %}<tr><th>{{ c.role }}</th><td>{{ c.name }}</td><td><a href="tel:{{ c.tel }}">{{ c.phone }}</a></td></tr>
+  {% empty %}<tr><td>No contacts yet. <a href="{% url 'admin:shop_contact_add' %}">Add one</a>.</td></tr>{% endfor %}</table></div>
 {{ block.super }}
 {% endblock %}

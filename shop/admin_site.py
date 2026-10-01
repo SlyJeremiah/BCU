@@ -14,7 +14,7 @@ class BCUAdminSite(admin.AdminSite):
     index_title = "Dashboard"
 
     def index(self, request, extra_context=None):
-        from .models import Donation, Order, OrderItem, Product
+        from .models import Contact, Donation, Order, OrderItem, Product
 
         paid = [Order.PAID, Order.SHIPPED, Order.COMPLETED]
         month_ago = timezone.now() - timedelta(days=30)
@@ -36,6 +36,7 @@ class BCUAdminSite(admin.AdminSite):
             ],
             "recent_orders": Order.objects.select_related("user").order_by("-created")[:6],
             "top_products": top,
+            "contacts": Contact.objects.all(),
             "low_stock": low_stock,
             "low_stock_below": LOW_STOCK_BELOW,
         }

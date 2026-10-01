@@ -12,13 +12,14 @@ from django.views.decorators.http import require_POST
 from .cart import Cart
 from .emails import send_donation_received
 from .forms import CheckoutForm, DonationForm, RegisterForm
-from .models import Category, Donation, Order, OrderItem, Product
+from .models import Category, Donation, Executive, Order, OrderItem, Product
 from .services import CheckoutError, create_order
 
 
 def home(request):
     products = Product.objects.filter(is_active=True)
-    return render(request, "shop/home.html", {"featured": products[:8], "categories": Category.objects.all()})
+    return render(request, "shop/home.html", {"featured": products[:8], "categories": Category.objects.all(),
+        "executives": Executive.objects.filter(is_active=True)})
 
 
 def product_list(request):

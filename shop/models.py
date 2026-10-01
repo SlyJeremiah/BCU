@@ -168,3 +168,48 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"{self.donor_name} – {self.amount}"
+
+
+def executive_photo_path(instance, filename):
+    return f"executives/{uuid.uuid4().hex}/{filename}"
+
+
+class Executive(models.Model):
+    """BCU executive committee member shown in 'Meet the Team' on the landing page."""
+    name = models.CharField(max_length=150)
+    position = models.CharField(max_length=150, help_text="e.g. Chairperson, Secretary, Treasurer")
+    photo = models.ImageField(upload_to=executive_photo_path, blank=True)
+    bio = models.CharField(max_length=300, blank=True)
+    order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
+    is_active = models.BooleanField(default=True, help_text="Untick to hide without deleting")
+
+    class Meta:
+        ordering = ["order", "name"]
+
+    @property
+    def initials(self):
+        return "".join(w[0] for w in self.name.split()[:2]).upper()
+
+    def __str__(self):
+        return f"{self.name} – {self.position}"
+
+
+class Contact(models.Model):
+    """Supplier / key contacts shown to staff on the admin dashboard."""
+    role = models.CharField(max_length=100, help_text="e.g. Tailor, Jerseys producer")
+    name = models.CharField(max_length=150)
+    phone = models.CharField(max_length=30)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "role"]
+
+    @property
+    def tel(self):
+        digits = "".join(c for c in self.phone if c.isdigit() or c == "+")
+        if digits.startswith("0"):
+            digits = "+263" + digits[1:]
+        return digits
+
+    def __str__(self):
+        return f"{self.role}: {self.name}"

@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from .models import Order, Product
+from .models import Contact, Executive, Order, Product
 
 User = get_user_model()
 
@@ -86,3 +86,29 @@ class ShopFlowTests(TestCase):
         r = self.client.post(reverse("donate"), {"donor_name": "A", "email": "a@a.com", "amount": "10"})
         self.assertEqual(r.status_code, 200)
         self.assertEqual(len(mail.outbox), 1)
+
+
+class TeamAndContactTests(TestCase):
+    def test_landing_shows_only_active_executives(self):
+        Executive.objects.create(name="Ann Moyo", position="Chairperson")
+        Executive.objects.create(name="Hidden Person", position="Secretary", is_active=False)
+        r = self.client.get(reverse("home"))
+        self.assertContains(r, "Ann Moyo")
+        self.assertContains(r, "Meet")
+        self.assertNotContains(r, "Hidden Person")
+
+    def test_no_team_section_when_empty(self):
+        self.assertNotContains(self.client.get(reverse("home")), 'id="team"')
+
+    def test_contacts_seeded_and_tel_links(self):
+        self.assertEqual(Contact.objects.count(), 4)
+        self.assertEqual(Contact.objects.get(role="Cards and Constitution").tel, "+263772480223")
+        self.assertEqual(Contact.objects.get(role="Tailor").tel, "+263773707319")
+
+    def test_admin_dashboard_lists_contacts(self):
+        u = User.objects.create_superuser("adm", "a@a.com", "pw12345678")
+        self.client.force_login(u)
+        r = self.client.get("/admin/")
+        self.assertContains(r, "Mr. Mabure")
+        self.assertContains(r, "Fairkiss")
+        self.assertEqual(self.client.get("/admin/shop/executive/").status_code, 200)
