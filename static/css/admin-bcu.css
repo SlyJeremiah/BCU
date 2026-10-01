@@ -1,0 +1,28 @@
+:root,html[data-theme="light"]{
+  --primary:#1e1e4b; --secondary:#d40000; --accent:#ffd60a;
+  --header-bg:#1e1e4b; --header-color:#fff; --header-branding-color:#fff; --header-link-color:#fff;
+  --breadcrumbs-bg:#d40000; --breadcrumbs-fg:#fff; --breadcrumbs-link-fg:#ffe98a;
+  --link-fg:#0b6b1e; --link-hover-color:#d40000; --link-selected-fg:#d40000;
+  --button-bg:#0b6b1e; --button-hover-bg:#074a14; --default-button-bg:#d40000; --default-button-hover-bg:#a30000;
+  --object-tools-bg:#1e1e4b; --object-tools-hover-bg:#d40000;
+  --module-header-bg:#1e1e4b;
+}
+#header{border-bottom:4px solid #ffd60a}
+.bcu-brand{display:flex!important;align-items:center;gap:10px;text-decoration:none}
+.bcu-brand img{width:40px;height:40px;border-radius:50%;background:#fff}
+.bcu-brand span{display:block;font-weight:700} .bcu-brand small{display:block;font-weight:400;font-size:.7rem;opacity:.8}
+.bcu-view{color:#ffd60a!important;font-weight:600}
+div.breadcrumbs{background:var(--breadcrumbs-bg)}
+.module caption,.module h2{background:#1e1e4b;color:#fff}
+.bcu-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:0 0 20px}
+.bcu-stat{background:var(--body-bg,#fff);border:1px solid var(--hairline-color,#ddd);border-left:6px solid #0b6b1e;border-radius:8px;padding:12px 14px}
+.bcu-stat.pending{border-left-color:#d40000}
+.bcu-stat span{display:block;font-size:.78rem;color:var(--body-quiet-color,#666)}
+.bcu-stat strong{font-size:1.6rem;color:var(--body-fg)}
+.bcu-panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px}
+.bcu-panels .module{margin:0}
+.bcu-badge{padding:2px 10px;border-radius:999px;font-size:.78rem;font-weight:600;background:#ffd60a;color:#1e1e4b;white-space:nowrap}
+.bcu-badge.paid,.bcu-badge.shipped,.bcu-badge.completed,.bcu-badge.confirmed{background:#0b6b1e;color:#fff}
+.bcu-badge.cancelled{background:#d40000;color:#fff}
+.bcu-thumb{width:44px;height:44px;object-fit:cover;border-radius:6px}
+.bcu-panels .module table{width:100%}.bcu-panels .module caption{width:100%;box-sizing:border-box}

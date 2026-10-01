@@ -1,0 +1,16 @@
+{% extends "admin/index.html" %}
+{% block content %}
+<div class="bcu-stats">
+{% for label, value, kind in stats %}
+  <div class="bcu-stat {{ kind }}"><span>{{ label }}</span><strong>{% if kind == "money" %}{{ SHOP.CURRENCY_SYMBOL }}{% endif %}{{ value }}</strong></div>
+{% endfor %}
+</div>
+<div class="bcu-panels">
+  <div class="module"><table><caption>Recent orders</caption>
+    {% for o in recent_orders %}<tr><th><a href="{% url 'admin:shop_order_change' o.pk %}">{{ o.short_id }}</a></th><td>{{ o.full_name }}</td><td><span class="bcu-badge {{ o.status }}">{{ o.get_status_display }}</span></td></tr>
+    {% empty %}<tr><td>No orders yet.</td></tr>{% endfor %}</table></div>
+  <div class="module"><table><caption>Top sellers</caption>
+    {% for t in top_products %}<tr><th>{{ t.product__name }}</th><td>{{ t.sold }} sold</td></tr>{% empty %}<tr><td>No sales yet.</td></tr>{% endfor %}</table></div>
+</div>
+{{ block.super }}
+{% endblock %}
