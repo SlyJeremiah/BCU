@@ -6,10 +6,12 @@
 <title>{% block title %}{{ SHOP.NAME }}{% endblock %} · {{ SHOP.ORG }}</title>
 <link rel="icon" href="{% static 'img/mcz-logo.jpg' %}">
 <link rel="stylesheet" href="{% static 'css/bcu.css' %}">
+<link rel="stylesheet" href="{% static 'css/theme.css' %}">
 <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 {% block head %}{% endblock %}
 </head>
-<body class="{% block bodyclass %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body class="themed {% block bodyclass %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<div class="bg-fx" aria-hidden="true"><div class="ring b1"></div><div class="ring b2"></div></div>
 <header class="site"><div class="wrap">
   <a class="brand" href="{% url 'home' %}"><img src="{% static 'img/mcz-logo.jpg' %}" alt="Methodist Church in Zimbabwe logo">
     <span>{{ SHOP.NAME }}<small>{{ SHOP.ORG }} · {{ SHOP.CHURCH }}</small></span></a>

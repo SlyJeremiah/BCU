@@ -1,16 +1,5 @@
 /* Landing page: gradient aurora + animated torus rings, in BCU colours */
-:root{
-  --m1:#d40000; --m2:#e0207a; --m3:#6a2c91; --m4:#1e1e4b; --sky:#38bdf8; --gold:#ffd60a;
-  --ease:cubic-bezier(.2,.8,.2,1);
-}
-body.landing{background:#12122b;color:#f4f4fa;overflow-x:hidden}
-body.landing main{position:relative}
-body.landing a{color:inherit}
 
-/* header floats over the hero as frosted glass */
-body.landing header.site{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(18,18,43,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.14)}
-body.landing .cross-bar{display:none}
-body.landing nav.main a:hover{color:var(--gold)}
 
 /* ---------- hero ---------- */
 .hero2{position:relative;min-height:100vh;display:flex;align-items:center;padding:110px 0 90px;overflow:hidden;isolation:isolate}
@@ -20,18 +9,9 @@ body.landing nav.main a:hover{color:var(--gold)}
 .aurora::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 20% 80%,rgba(255,214,10,.18),transparent 60%),radial-gradient(60% 50% at 85% 15%,rgba(255,255,255,.22),transparent 60%)}
 @keyframes shift{to{background-position:100% 60%}}
 
-.ring{position:absolute;border-radius:50%;z-index:-2;pointer-events:none;
-  background:conic-gradient(from 20deg,var(--m1),var(--m2),var(--m3),#2b8fe0,var(--sky),var(--m2),var(--m1));
-  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - var(--t,90px)),#000 calc(100% - var(--t,90px) + 1px));
-          mask:radial-gradient(farthest-side,transparent calc(100% - var(--t,90px)),#000 calc(100% - var(--t,90px) + 1px));
-  filter:drop-shadow(0 30px 40px rgba(30,30,75,.45)) saturate(1.1);
-  transform:translate3d(var(--px,0),var(--py,0),0)}
-.ring::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.55),transparent 38%);-webkit-mask:inherit;mask:inherit}
 .r1{width:min(78vw,780px);aspect-ratio:1;--t:130px;left:-14%;top:-12%;animation:spin 46s linear infinite,float 9s ease-in-out infinite alternate}
 .r2{width:min(60vw,560px);aspect-ratio:1;--t:100px;right:-10%;bottom:-18%;opacity:.95;animation:spin 60s linear infinite reverse,float 11s ease-in-out infinite alternate-reverse}
 .r3{width:min(26vw,240px);aspect-ratio:1;--t:46px;right:34%;top:12%;opacity:.8;animation:spin 24s linear infinite,float 7s ease-in-out infinite alternate}
-@keyframes spin{to{rotate:360deg}}
-@keyframes float{from{translate:0 -14px}to{translate:0 18px}}
 
 .orb{position:absolute;border-radius:50%;z-index:-1;background:radial-gradient(circle at 30% 30%,#fff,rgba(255,255,255,.1) 60%,transparent 70%);transform:translate3d(var(--px,0),var(--py,0),0);animation:bob 8s ease-in-out infinite alternate}
 .o1{width:90px;height:90px;left:46%;top:18%}.o2{width:46px;height:46px;left:8%;bottom:16%;animation-delay:-3s}.o3{width:64px;height:64px;right:8%;top:30%;animation-delay:-5s}
@@ -50,14 +30,6 @@ body.landing nav.main a:hover{color:var(--gold)}
 .lede{max-width:520px;font-size:1.1rem;opacity:.95;margin:0 0 26px}
 
 .cta{display:flex;gap:14px;flex-wrap:wrap}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:999px;border:2px solid rgba(255,255,255,.9);color:#fff;text-decoration:none;font-weight:600;background:transparent;cursor:pointer;font:inherit;font-weight:600;transition:transform .3s var(--ease),background .3s,color .3s,box-shadow .3s}
-.pill:hover{transform:translateY(-3px);background:rgba(255,255,255,.18);box-shadow:0 12px 30px rgba(0,0,0,.25)}
-.pill.solid{background:#fff;color:var(--m4);border-color:#fff}
-.pill.solid:hover{background:var(--gold);border-color:var(--gold);color:var(--m4)}
-.pill.solid i{font-style:normal;transition:transform .3s var(--ease)} .pill.solid:hover i{transform:translateX(5px)}
-.pill.sm{padding:8px 16px;font-size:.92rem;background:var(--m1);border-color:var(--m1);color:#fff}
-.pill.sm:hover{background:var(--m2);border-color:var(--m2);color:#fff}
-.pill.dark{border-color:var(--sky);color:#fff}.pill.dark:hover{background:var(--sky);color:var(--m4)}
 
 /* hero art */
 .hero2-art{position:relative;justify-self:center;width:min(420px,84vw);aspect-ratio:1;transform:translate3d(var(--px,0),var(--py,0),0)}
@@ -91,14 +63,7 @@ body.landing main{padding-top:56px}
 
 .section2{font-size:clamp(1.6rem,4vw,2.4rem);margin:64px 0 22px;font-weight:800}
 .section2 span{background:linear-gradient(90deg,var(--gold),var(--m2));-webkit-background-clip:text;background-clip:text;color:transparent}
-body.landing .card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(8px);transition:transform .25s ease,box-shadow .3s,border-color .3s;transform-style:preserve-3d;will-change:transform}
-body.landing .card:hover{box-shadow:0 26px 50px rgba(0,0,0,.4),0 0 0 1px var(--gold) inset;border-color:var(--gold)}
-body.landing .card .img{background:linear-gradient(135deg,var(--m3),var(--m1));overflow:hidden}
-body.landing .card .img img{transition:transform .6s var(--ease)} body.landing .card:hover .img img{transform:scale(1.08)}
 .ph{font-size:3rem;color:rgba(255,255,255,.6)}
-body.landing .card h3 a{color:#fff}
-body.landing .price{color:var(--gold);font-size:1.1rem}
-body.landing .tag{background:var(--gold)}
 
 .cats{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:34px}
 .cats a{padding:8px 20px;border-radius:999px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;transition:.3s}
@@ -109,11 +74,8 @@ body.landing .tag{background:var(--gold)}
 .r4{width:300px;aspect-ratio:1;--t:60px;left:-80px;top:-100px;opacity:.55;animation:spin 30s linear infinite}
 .r5{width:220px;aspect-ratio:1;--t:44px;right:-50px;bottom:-90px;opacity:.55;animation:spin 22s linear infinite reverse}
 .give .ring{z-index:-1}
-body.landing footer.site{margin-top:60px;background:#0c0c20}
+body.themed footer.site{margin-top:60px;background:#0c0c20}
 
-/* ---------- scroll reveal ---------- */
-.reveal{opacity:0;transform:translateY(34px);filter:blur(4px);transition:opacity .9s var(--ease) var(--d,0ms),transform .9s var(--ease) var(--d,0ms),filter .9s var(--ease) var(--d,0ms)}
-.reveal.in{opacity:1;transform:none;filter:none}
 .hero2 .reveal:nth-child(2){transition-delay:.12s}.hero2 .reveal:nth-child(3){transition-delay:.24s}.hero2 .reveal:nth-child(4){transition-delay:.36s}
 
 @media(max-width:860px){
