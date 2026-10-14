@@ -14,9 +14,9 @@ class RegisterForm(UserCreationForm):
 
 
 class CheckoutForm(forms.Form):
-    full_name = forms.CharField(max_length=150)
-    email = forms.EmailField()
-    phone = forms.CharField(max_length=30)
+    full_name = forms.CharField(max_length=150, widget=forms.TextInput(attrs={"autocomplete": "name"}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"autocomplete": "email", "inputmode": "email"}))
+    phone = forms.CharField(max_length=30, widget=forms.TextInput(attrs={"autocomplete": "tel", "inputmode": "tel", "type": "tel"}))
     address = forms.CharField(widget=forms.Textarea(attrs={"rows": 2}), required=False)
     city = forms.CharField(max_length=100, required=False)
     notes = forms.CharField(widget=forms.Textarea(attrs={"rows": 2}), required=False)
@@ -34,8 +34,8 @@ class CheckoutForm(forms.Form):
 
 
 class DonationForm(forms.Form):
-    donor_name = forms.CharField(max_length=150, label="Your name")
-    email = forms.EmailField()
-    amount = forms.DecimalField(min_value=1, max_digits=10, decimal_places=2)
+    donor_name = forms.CharField(max_length=150, label="Your name", widget=forms.TextInput(attrs={"autocomplete": "name"}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"autocomplete": "email", "inputmode": "email"}))
+    amount = forms.DecimalField(min_value=1, max_digits=10, decimal_places=2, widget=forms.NumberInput(attrs={"inputmode": "decimal"}))
     purpose = forms.CharField(max_length=200, required=False, label="Purpose (optional)")
     payment_reference = forms.CharField(max_length=100, required=False, label="Mobile money reference")

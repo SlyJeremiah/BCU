@@ -63,6 +63,18 @@ class ShopFlowTests(TestCase):
         self.assertEqual(r.status_code, 201)
         self.assertEqual(c.get("/api/products/").status_code, 200)
 
+    def test_cart_remove_offers_undo(self):
+        self.client.post(reverse("cart_add", args=[self.tie.pk]), {"quantity": 2})
+        hx = {"HTTP_HX_REQUEST": "true"}
+        r = self.client.post(reverse("cart_remove", args=[self.tie.pk]), **hx)
+        self.assertContains(r, "Undo")
+        self.assertContains(r, 'hx-swap-oob="innerHTML:#cart-badge"')
+        self.assertEqual(self.client.get(reverse("cart")).context["items"], [])
+        r = self.client.post(reverse("cart_undo"), **hx)
+        self.assertNotContains(r, "Undo")
+        items = self.client.get(reverse("cart")).context["items"]
+        self.assertEqual(items[0]["quantity"], 2)
+
     def test_quote_pdf(self):
         self.client.login(username="bob", password="pw12345678")
         self.assertRedirects(self.client.get(reverse("quote_pdf")), reverse("cart"))

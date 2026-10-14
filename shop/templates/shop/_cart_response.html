@@ -1,0 +1,4 @@
+{% include "shop/_cart_body.html" %}
+<span hx-swap-oob="innerHTML:#cart-badge">{% include "shop/_cart_badge.html" %}</span>
+<div hx-swap-oob="innerHTML:#toast">{% if toast %}<div class="toast-item"><span>Removed “{{ toast.name }}”</span>
+  <button type="button" class="toast-btn" hx-post="{% url 'cart_undo' %}" hx-target="#cart-body">Undo</button></div>{% endif %}</div>

@@ -47,8 +47,10 @@ def product_detail(request, slug):
 
 
 # ---- Cart (HTMX) --------------------------------------------------------------
-def _cart_response(request, cart):
-    return render(request, "shop/_cart_body.html", {"items": cart.items(), "total": cart.total})
+def _cart_response(request, cart, toast=None):
+    """HTMX response: the cart table, plus out-of-band header badge and (optional) undo toast."""
+    return render(request, "shop/_cart_response.html",
+                  {"items": cart.items(), "total": cart.total, "toast": toast})
 
 
 def cart_detail(request):
@@ -83,7 +85,24 @@ def cart_update(request, pk):
 @require_POST
 def cart_remove(request, pk):
     cart = Cart(request)
-    cart.remove(get_object_or_404(Product, pk=pk))
+    product = get_object_or_404(Product, pk=pk)
+    qty = cart.data.get(str(product.pk), 0)
+    cart.remove(product)
+    if qty:  # forgiveness: undo instead of a confirmation dialog
+        request.session["cart_undo"] = {"pk": product.pk, "qty": qty}
+    if request.headers.get("HX-Request"):
+        return _cart_response(request, cart, toast={"name": product.name} if qty else None)
+    return redirect("cart")
+
+
+@require_POST
+def cart_undo(request):
+    cart = Cart(request)
+    undo = request.session.pop("cart_undo", None)
+    if undo:
+        product = Product.objects.filter(pk=undo["pk"], is_active=True).first()
+        if product:
+            cart.set(product, undo["qty"])
     return _cart_response(request, cart) if request.headers.get("HX-Request") else redirect("cart")
 
 

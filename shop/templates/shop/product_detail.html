@@ -1,8 +1,12 @@
 {% extends "shop/base.html" %}
 {% block title %}{{ product.name }}{% endblock %}
 {% block content %}
-<div class="two" style="margin-top:24px">
-  <div class="card"><div class="img">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}No image{% endif %}</div></div>
+<nav aria-label="Breadcrumb"><ol class="crumbs">
+  <li><a href="{% url 'home' %}">Home</a></li><li><a href="{% url 'product_list' %}">Shop</a></li>
+  {% if product.category %}<li><a href="{% url 'product_list' %}?category={{ product.category.slug }}">{{ product.category.name }}</a></li>{% endif %}
+  <li aria-current="page">{{ product.name }}</li></ol></nav>
+<div class="two">
+  <div class="card" style="transform:none"><div class="img">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}No image{% endif %}</div></div>
   <div>
     <span class="tag {{ product.kind }}">{{ product.get_kind_display }}</span>
     <h1>{{ product.name }}</h1>
@@ -11,9 +15,9 @@
     {% if product.is_digital %}<p class="notice">Digital item: available to download from your order page once payment is confirmed.</p>
     {% elif product.in_stock %}<p>{{ product.stock }} in stock</p>{% endif %}
     {% if product.in_stock %}
-    <form method="post" action="{% url 'cart_add' product.pk %}" hx-post="{% url 'cart_add' product.pk %}" hx-target="#cart-badge">{% csrf_token %}
+    <form method="post" action="{% url 'cart_add' product.pk %}" hx-post="{% url 'cart_add' product.pk %}" hx-target="#cart-badge" hx-swap="innerHTML">{% csrf_token %}
       {% if not product.is_digital %}<p style="max-width:120px"><input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}"></p>{% endif %}
-      <button class="btn green">Add to cart</button> <span id="add-note-{{ product.pk }}"></span></form>
+      <button class="btn green">Add to cart</button></form>
     {% else %}<p style="color:var(--red)"><strong>Out of stock</strong></p>{% endif %}
   </div>
 </div>
