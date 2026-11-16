@@ -1,0 +1,24 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h2 class="section">{{ title }}</h2>
+<div class="prose">
+  <h3>Physical items</h3>
+  <p>Add your delivery address and city at checkout. {{ SHOP.DELIVERY_NOTE }}</p>
+  <p>Stock is reserved when you place your order. If an order is cancelled, the items return to stock.</p>
+
+  <h3>Digital items</h3>
+  <p>Sermons and other digital items unlock on your order page once your payment is confirmed. Open <a href="{% url 'order_list' %}">My orders</a>, choose the order and press <strong>Download</strong>.</p>
+  <p>For security, each download link works for a few minutes only. If a link has expired, press <strong>Download</strong> again to get a fresh one.</p>
+
+  <h3>Order status</h3>
+  <ul>
+    <li><strong>Awaiting payment confirmation:</strong> we have your order and are checking your payment.</li>
+    <li><strong>Paid:</strong> your payment is confirmed. Digital items are available.</li>
+    <li><strong>Shipped / ready for collection:</strong> your physical items are on the way or ready.</li>
+    <li><strong>Completed:</strong> your order is finished.</li>
+    <li><strong>Cancelled:</strong> the order was cancelled.</li>
+  </ul>
+  {% if SHOP.CONTACT_EMAIL or SHOP.CONTACT_PHONE %}<p>Problem with an order? {% if SHOP.CONTACT_EMAIL %}Email <a href="mailto:{{ SHOP.CONTACT_EMAIL }}">{{ SHOP.CONTACT_EMAIL }}</a>{% endif %}{% if SHOP.CONTACT_EMAIL and SHOP.CONTACT_PHONE %} or {% endif %}{% if SHOP.CONTACT_PHONE %}call <a href="tel:{{ SHOP.CONTACT_PHONE }}">{{ SHOP.CONTACT_PHONE }}</a>{% endif %}, and quote your order number.</p>{% endif %}
+</div>
+{% endblock %}

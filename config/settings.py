@@ -194,6 +194,15 @@ SHOP = {
         "Branch code": os.environ.get("BANK_BRANCH_CODE", "21125"),
         "Account number": os.environ.get("BANK_ACCOUNT_NUMBER", "12873696633189"),
     },
+    # Officers' portal (the Connexional BCU national database), linked from the footer.
+    "CONNEXIONAL_URL": os.environ.get("CONNEXIONAL_URL", "https://mczconnexionalbcu.vercel.app/admin/"),
+    # Shown in the footer and on the help pages only when set.
+    "CONTACT_EMAIL": os.environ.get("SHOP_CONTACT_EMAIL", ""),
+    "CONTACT_PHONE": os.environ.get("SHOP_CONTACT_PHONE", ""),
+    "DELIVERY_NOTE": os.environ.get(
+        "SHOP_DELIVERY_NOTE",
+        "Once your payment is confirmed, we will contact you on the phone number or email you gave to arrange delivery or collection.",
+    ),
 }
 
 if not DEBUG:

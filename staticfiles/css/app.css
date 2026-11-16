@@ -331,3 +331,22 @@ footer.site { padding: var(--s6) 0; color: var(--muted); font-size: .875rem; bor
 
 main h1 { font-size: clamp(1.9rem, 4vw + .6rem, 3rem); margin-bottom: var(--s3); }
 .hero h1 { font-size: clamp(2.4rem, 5.2vw + .6rem, 4.4rem); margin-bottom: 0; }
+
+/* ---------- footer (columns) and help pages ---------- */
+footer.site { padding: var(--s7) 0 var(--s5); }
+.foot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr)); gap: var(--s6) var(--s5); }
+footer.site h2 { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--ink); margin: 0 0 var(--s3); }
+footer.site p { margin: 0 0 var(--s3); line-height: 1.5; }
+footer.site ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+footer.site li a { display: inline-block; padding: .35rem 0; min-height: 2.25rem; }
+footer.site a { color: var(--muted); }
+footer.site a:hover { color: var(--ink); }
+.foot-small { font-size: .8rem; }
+.foot-contact { font-weight: 600; }
+.foot-legal { border-top: 1px solid var(--line); margin: var(--s6) 0 0 !important; padding-top: var(--s4); font-size: .8rem; }
+
+.prose { max-width: 42rem; }
+.prose h3 { margin: var(--s5) 0 var(--s2); font-size: 1.15rem; }
+.prose ol, .prose ul { padding-left: 1.3rem; margin: 0 0 var(--s4); }
+.prose li { margin-bottom: var(--s2); }
+.prose .notice { margin: var(--s4) 0; }

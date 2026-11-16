@@ -124,3 +124,34 @@ class TeamAndContactTests(TestCase):
         self.assertContains(r, "Mr. Mabure")
         self.assertContains(r, "Fairkiss")
         self.assertEqual(self.client.get("/admin/shop/executive/").status_code, 200)
+
+
+class FooterAndHelpTests(TestCase):
+    PORTAL = "https://mczconnexionalbcu.vercel.app/admin/"
+
+    def test_footer_links_to_officers_portal_safely_on_every_page(self):
+        for url in ["/", "/shop/", "/donate/", "/info/privacy/"]:
+            r = self.client.get(url)
+            self.assertContains(r, f'href="{self.PORTAL}" target="_blank" rel="noopener noreferrer"', msg_prefix=url)
+            self.assertContains(r, "BCU officers", msg_prefix=url)
+
+    def test_help_pages_open_and_unknown_page_404s(self):
+        for slug, text in [("how-to-order", "How to order and pay"), ("delivery", "Delivery and downloads"), ("privacy", "Privacy")]:
+            r = self.client.get(reverse("info", args=[slug]))
+            self.assertContains(r, text)
+        self.assertEqual(self.client.get("/info/nonsense/").status_code, 404)
+
+    def test_how_to_order_shows_payment_details(self):
+        r = self.client.get(reverse("info", args=["how-to-order"]))
+        self.assertContains(r, "BancABC")
+        self.assertContains(r, "+263 78 551 0151")
+
+    def test_contact_details_appear_only_when_configured(self):
+        self.assertNotContains(self.client.get("/"), "mailto:")
+        from django.test import override_settings
+        from django.conf import settings
+        shop = {**settings.SHOP, "CONTACT_EMAIL": "shop@example.org", "CONTACT_PHONE": "+263770000000"}
+        with override_settings(SHOP=shop):
+            r = self.client.get("/")
+            self.assertContains(r, "mailto:shop@example.org")
+            self.assertContains(r, "tel:+263770000000")

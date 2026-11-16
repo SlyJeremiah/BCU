@@ -1,0 +1,22 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h2 class="section">{{ title }}</h2>
+<div class="prose">
+  <ol>
+    <li><strong>Choose your items.</strong> Browse the <a href="{% url 'product_list' %}">shop</a> and add what you want to your cart. Physical items show how many are in stock.</li>
+    <li><strong>Log in or create an account.</strong> You need an account to check out, so you can see your orders and downloads later.</li>
+    <li><strong>Check out.</strong> Enter your name, email and phone number. If your order includes physical items, add your delivery address and city. You can download a PDF quote before you pay.</li>
+    <li><strong>Pay.</strong> Pay the total by bank transfer or EcoCash using the details below, then enter your payment reference and upload your proof of payment (an image or PDF, up to 4 MB).</li>
+    <li><strong>We confirm your payment.</strong> A BCU administrator checks it and updates your order. You will receive an email, and you can follow the status under <a href="{% url 'order_list' %}">My orders</a>.</li>
+    <li><strong>Receive your items.</strong> Digital items (sermons, resources) unlock on your order page once payment is confirmed. See <a href="{% url 'info' 'delivery' %}">delivery and downloads</a> for physical items.</li>
+  </ol>
+  {% include "shop/_payment_info.html" %}
+  <h3>Giving a donation</h3>
+  <p>You do not need an account to give. Use the <a href="{% url 'donate' %}">donate page</a>, then pay with the same details and quote your reference.</p>
+  <h3>Prices</h3>
+  <p>All prices are in US dollars ({{ SHOP.CURRENCY }}). We do not take card payments on this site.</p>
+  {% if SHOP.CONTACT_EMAIL or SHOP.CONTACT_PHONE %}<h3>Need help?</h3>
+  <p>{% if SHOP.CONTACT_EMAIL %}Email <a href="mailto:{{ SHOP.CONTACT_EMAIL }}">{{ SHOP.CONTACT_EMAIL }}</a>{% endif %}{% if SHOP.CONTACT_EMAIL and SHOP.CONTACT_PHONE %} or {% endif %}{% if SHOP.CONTACT_PHONE %}call <a href="tel:{{ SHOP.CONTACT_PHONE }}">{{ SHOP.CONTACT_PHONE }}</a>{% endif %}.</p>{% endif %}
+</div>
+{% endblock %}

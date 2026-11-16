@@ -1,0 +1,31 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h2 class="section">{{ title }}</h2>
+<div class="prose">
+  <p>This shop is run by the {{ SHOP.ORG }} (BCU) of {{ SHOP.CHURCH }}. This page explains what we keep about you and why.</p>
+
+  <h3>What we collect</h3>
+  <ul>
+    <li><strong>Your account:</strong> username, email and password. Passwords are stored in scrambled form, so nobody can read them.</li>
+    <li><strong>Your orders:</strong> name, email, phone number, delivery address and city (for physical items), notes, and the items you ordered.</li>
+    <li><strong>Your payment:</strong> the payment reference and the proof of payment you upload. We never see or store card details, because we do not take card payments.</li>
+    <li><strong>Donations:</strong> name, email, amount, purpose and payment reference.</li>
+  </ul>
+
+  <h3>Why we use it</h3>
+  <p>To process your order, confirm your payment, deliver your items, email you about your order, and keep records of what the BCU has sold and received. We do not sell your information, and we do not use it for advertising.</p>
+
+  <h3>Who can see it</h3>
+  <p>Only BCU administrators who run the shop. Proof-of-payment files and paid downloads are kept private and are not open to the public. We share details only when needed to deliver your order.</p>
+
+  <h3>Cookies</h3>
+  <p>We use only the cookies the site needs to work: a session cookie that keeps you logged in and holds your cart, and a security cookie that protects forms from forgery. There are no advertising or tracking cookies. The pages load one script from a public content network (unpkg.com) to make the cart update without reloading.</p>
+
+  <h3>Your choices</h3>
+  <p>You can see your orders at any time under <a href="{% url 'order_list' %}">My orders</a>. To correct or delete your details, contact us{% if SHOP.CONTACT_EMAIL or SHOP.CONTACT_PHONE %} at {% if SHOP.CONTACT_EMAIL %}<a href="mailto:{{ SHOP.CONTACT_EMAIL }}">{{ SHOP.CONTACT_EMAIL }}</a>{% endif %}{% if SHOP.CONTACT_EMAIL and SHOP.CONTACT_PHONE %} or {% endif %}{% if SHOP.CONTACT_PHONE %}<a href="tel:{{ SHOP.CONTACT_PHONE }}">{{ SHOP.CONTACT_PHONE }}</a>{% endif %}{% endif %}. We may need to keep records of paid orders for accounting.</p>
+
+  <h3>Officers' portal</h3>
+  <p>The link to the Connexional BCU database in the footer is for BCU officers only. It is a separate system with its own login, and customers' shop accounts do not give access to it.</p>
+</div>
+{% endblock %}

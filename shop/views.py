@@ -182,6 +182,21 @@ def download(request, pk, item_id):
                         filename=product.digital_file.name.split("/")[-1])
 
 
+# ---- Help pages ----------------------------------------------------------------------
+INFO_PAGES = {
+    "how-to-order": ("How to order and pay", "shop/info_how.html"),
+    "delivery": ("Delivery and downloads", "shop/info_delivery.html"),
+    "privacy": ("Privacy", "shop/info_privacy.html"),
+}
+
+
+def info(request, slug):
+    if slug not in INFO_PAGES:
+        raise Http404
+    title, template = INFO_PAGES[slug]
+    return render(request, template, {"title": title})
+
+
 # ---- Donations -----------------------------------------------------------------
 def donate(request):
     initial = {}

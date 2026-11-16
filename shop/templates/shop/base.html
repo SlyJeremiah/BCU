@@ -38,6 +38,7 @@
     <li><a href="{% url 'product_list' %}?kind=digital">Sermons &amp; resources</a></li>
     <li><a href="{% url 'donate' %}" {% if current == 'donate' %}aria-current="page"{% endif %}>Donate</a></li>
     <li><a href="{% url 'cart' %}" {% if current == 'cart' %}aria-current="page"{% endif %}>Cart</a></li>
+    <li><a href="{% url 'info' 'how-to-order' %}">How to order and pay</a></li>
     <li><hr></li>
     {% if user.is_authenticated %}
       <li><a href="{% url 'order_list' %}" {% if current == 'order_list' %}aria-current="page"{% endif %}>My orders</a></li>
@@ -57,7 +58,40 @@
     {% block content %}{% endblock %}
   </main>
   <footer class="site"><div class="wrap">
-    © {% now "Y" %} {{ SHOP.ORG }} (BCU) · {{ SHOP.CHURCH }}. Proceeds support the work of the BCU.
+    <div class="foot-grid">
+      <section aria-labelledby="f-about">
+        <h2 id="f-about">{{ SHOP.NAME }}</h2>
+        <p>The official shop of the {{ SHOP.ORG }} (BCU) of {{ SHOP.CHURCH }}. Every purchase and gift supports the BCU's work with boys and young men.</p>
+        {% if SHOP.CONTACT_EMAIL or SHOP.CONTACT_PHONE %}<p class="foot-contact">
+          {% if SHOP.CONTACT_EMAIL %}<a href="mailto:{{ SHOP.CONTACT_EMAIL }}">{{ SHOP.CONTACT_EMAIL }}</a><br>{% endif %}
+          {% if SHOP.CONTACT_PHONE %}<a href="tel:{{ SHOP.CONTACT_PHONE }}">{{ SHOP.CONTACT_PHONE }}</a>{% endif %}</p>{% endif %}
+      </section>
+      <nav aria-labelledby="f-shop">
+        <h2 id="f-shop">Shop</h2>
+        <ul>
+          <li><a href="{% url 'product_list' %}">All products</a></li>
+          <li><a href="{% url 'product_list' %}?kind=digital">Sermons &amp; resources</a></li>
+          <li><a href="{% url 'donate' %}">Donate</a></li>
+          <li><a href="{% url 'order_list' %}">My orders</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-help">
+        <h2 id="f-help">Help</h2>
+        <ul>
+          <li><a href="{% url 'info' 'how-to-order' %}">How to order and pay</a></li>
+          <li><a href="{% url 'info' 'delivery' %}">Delivery and downloads</a></li>
+          <li><a href="{% url 'info' 'privacy' %}">Privacy</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-conn">
+        <h2 id="f-conn">BCU officers</h2>
+        <ul>
+          <li><a href="{{ SHOP.CONNEXIONAL_URL }}" target="_blank" rel="noopener noreferrer">Connexional BCU database<span class="sr-only"> (opens in a new tab)</span> <span aria-hidden="true">↗</span></a></li>
+        </ul>
+        <p class="foot-small">For BCU officers only. Login required.</p>
+      </nav>
+    </div>
+    <p class="foot-legal">© {% now "Y" %} {{ SHOP.ORG }} (BCU) · {{ SHOP.CHURCH }}. Prices are in US dollars ({{ SHOP.CURRENCY }}).</p>
   </div></footer>
 </div>
 

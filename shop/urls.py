@@ -18,5 +18,6 @@ urlpatterns = [
     path("orders/<uuid:pk>/pdf/", views.order_pdf_view, name="order_pdf"),
     path("orders/<uuid:pk>/download/<int:item_id>/", views.download, name="download"),
     path("donate/", views.donate, name="donate"),
+    path("info/<slug:slug>/", views.info, name="info"),
     path("accounts/register/", views.register, name="register"),
 ]
